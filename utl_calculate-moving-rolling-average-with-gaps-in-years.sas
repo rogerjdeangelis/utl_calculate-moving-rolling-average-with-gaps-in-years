@@ -1,6 +1,6 @@
 Calculate moving rolling average with gaps in years                                                                                     
                                                                                                                                         
-   Two R Solutions                                                                                                                      
+   Three R Solutions                                                                                                                      
                                                                                                                                         
        a. rollmean function                                                                                                             
                                                                                                                                         
