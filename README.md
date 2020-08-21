@@ -1,8 +1,8 @@
 # utl_calculate-moving-rolling-average-with-gaps-in-years
 utl_calculate-moving-rolling-average-with-gaps-in-years
-     Calculate moving rolling average with gaps in years                                                                                 
+    Calculate moving rolling average with gaps in years                                                                                 
                                                                                                                                         
-       Three R Solutions                                                                                                                  
+       Three R Solutions                                                                                                                
                                                                                                                                         
            a. rollmean function                                                                                                         
                                                                                                                                         
@@ -19,6 +19,16 @@ utl_calculate-moving-rolling-average-with-gaps-in-years
               Automatically takes care of non sequencial sequences within ID and changes in UD                                          
               Should be very fast                                                                                                       
                                                                                                                                         
+           d. Interesting MA where missing consecutive 3 days are always set to missing and                                             
+              other gaps are filled (see detal explanantion below.                                                                      
+              John Whittington                                                                                                          
+              John.W@mediscience.co.uk                                                                                                  
+                                                                                                                                        
+           e. array                                                                                                                     
+              Bartosz Jablonski                                                                                                         
+              yabwon@gmail.com                                                                                                          
+                                                                                                                                        
+                                                                                                                                        
     How to install rolling window;                                                                                                      
                                                                                                                                         
     # install.packages("devtools") # if not installed                                                                                   
@@ -30,7 +40,7 @@ utl_calculate-moving-rolling-average-with-gaps-in-years
     https://tinyurl.com/y3dukh6n                                                                                                        
     https://github.com/rogerjdeangelis/utl_calculate-moving-rolling-average-with-gaps-in-years                                          
                                                                                                                                         
-    related repors                                                                                                                      
+    related repos                                                                                                                       
     https://tinyurl.com/y3wohee8                                                                                                        
     https://github.com/rogerjdeangelis?tab=repositories&q=moving++in%3Aname&type=&language=                                             
     https://github.com/rogerjdeangelis?tab=repositories&q=rolling++in%3Aname&type=&language=                                            
@@ -121,6 +131,50 @@ utl_calculate-moving-rolling-average-with-gaps-in-years
                                                                                                                                         
       2018      0.15    5      7       .                                                                                                
       2019      0.86    5      7       .                                                                                                
+                                                                                                                                        
+    /*   _     _   _                               _                                                                                    
+      __| |   | |_| |__  _ __ ___  ___   _ __ ___ (_)___ ___                                                                            
+     / _` |   | __| `_ \| `__/ _ \/ _ \ | `_ ` _ \| / __/ __|                                                                           
+    | (_| |_  | |_| | | | | |  __/  __/ | | | | | | \__ \__ \                                                                           
+     \__,_(_)  \__|_| |_|_|  \___|\___| |_| |_| |_|_|___/___/                                                                           
+                                                                                                                                        
+    */                                                                                                                                  
+     Interesting enhancement                                                                                                            
+                                                                                                                                        
+    Up to 40 obs WORK.WANT total obs=28                                                                                                 
+                                                                                                                                        
+                                           ROLLING_                                                                                     
+    Obs    ID    YEAR    VARIABLE            MEAN                                                                                       
+                                                                                                                                        
+      1     1    1990      0.24             0.24000                                                                                     
+      2     2    2003      0.13             0.18500                                                                                     
+      3     2    2004      0.22             0.19667                                                                                     
+      4     2    2005      0.26             0.20333                                                                                     
+      5     2    2006      0.10             0.19333                                                                                     
+      6     2    2007      0.95             0.43667                                                                                     
+      7     5    1998      0.20             0.41667                                                                                     
+      8     5    1999      0.33             0.49333                                                                                     
+      9     5    2000      0.42             0.31667                                                                                     
+     10     5    2001      0.01             0.25333                                                                                     
+     11     5    2002      0.42             0.28333                                                                                     
+     12     5    2003       .               0.21500                                                                                     
+     13     5    2004      0.54             0.48000                                                                                     
+     14     5    2005      0.83             0.68500                                                                                     
+     15     5    2006      0.13             0.50000                                                                                     
+     16     5    2007      0.25             0.40333                                                                                     
+     17     5    2008       .   * sequence  0.19000                                                                                     
+     18     5    2009       .     three     0.25000                                                                                     
+     19     5    2010       .     missing    .       * fined because parking meter                                                      
+     20     5    2011      0.98             0.98000    ran out after 3 periods                                                          
+     21     5    2012      0.40             0.69000                                                                                     
+     22     5    2013      0.75             0.71000                                                                                     
+     23     5    2014      0.08             0.41000                                                                                     
+     24     5    2015      0.09             0.30667                                                                                     
+     25     5    2016      0.32             0.16333                                                                                     
+     26     5    2017       .               0.20500                                                                                     
+     27     5    2018      0.15             0.23500                                                                                     
+     28     5    2019      0.86             0.50500                                                                                     
+                                                                                                                                        
     /*         _       _   _                                                                                                            
      ___  ___ | |_   _| |_(_) ___  _ __  ___                                                                                            
     / __|/ _ \| | | | | __| |/ _ \| `_ \/ __|                                                                                           
@@ -210,6 +264,7 @@ utl_calculate-moving-rolling-average-with-gaps-in-years
     run;quit;                                                                                                                           
     libname xpt clear;                                                                                                                  
                                                                                                                                         
+                                                                                                                                        
     /*                           _ _                                                                                                    
       ___      ___  _ __   ___  | (_)_ __   ___ _ __                                                                                    
      / __|    / _ \| `_ \ / _ \ | | | `_ \ / _ \ `__|                                                                                   
@@ -236,5 +291,79 @@ utl_calculate-moving-rolling-average-with-gaps-in-years
                       );                                                                                                                
     run;                                                                                                                                
                                                                                                                                         
+    /*   _     _   _                               _         _                                                                          
+      __| |   | |_| |__  _ __ ___  ___   _ __ ___ (_)___ ___(_)_ __   __ _                                                              
+     / _` |   | __| `_ \| `__/ _ \/ _ \ | `_ ` _ \| / __/ __| | `_ \ / _` |                                                             
+    | (_| |_  | |_| | | | | |  __/  __/ | | | | | | \__ \__ \ | | | | (_| |                                                             
+     \__,_(_)  \__|_| |_|_|  \___|\___| |_| |_| |_|_|___/___/_|_| |_|\__, |                                                             
+                                                                     |___/                                                              
+    */                                                                                                                                  
+                                                                                                                                        
+    "                                                                                                                                   
+    I suppose it depends upon what one wants.                                                                                           
+                                                                                                                                        
+    The approaches being described all seem to result in the moving average (for an N-point MA)                                         
+    being 'missing' for a block of N time points (e.g. years) if data is missing for  just one time point.                              
+                                                                                                                                        
+    I use moving averages all the time, most commonly 7-day moving averages of daily data,                                              
+    and the requirement is usually for the 'MA' to be the average of however many (or few!)                                             
+    non-missing data figures are available over the 7 day period ending on any particular date                                          
+    - so the moving average only becomes 'missing' if data for 7 consecutive days are missing.                                          
+                                                                                                                                        
+    When I have missing data, there is usually an observation, but with the value of the                                                
+    data being absent.  However if, as in the data we are considering, there are actually                                               
+    missing observations, I first replace them with dummy ones (with variable=. ).                                                      
+    I'm sure that there are probably simpler and/or more elegant ways of inserting the                                                  
+    dummy observations than in the hastily-written brute force code below (for the data                                                 
+    we are talking about) but, once that task is done,                                                                                  
+    the data step to produce "this sort of MA" is again essentially just a one-liner.                                                   
+    In this case, "this sort of MA" is only missing in one case, since, for the 3-point MA,                                             
+    Roger's data has one instance of there being three consecutive years' data missing ..."                                             
+                                                                                                                                        
+    data GapsFilled (drop = last_year this_year this_var) ;                                                                             
+       set sd1.have ;                                                                                                                   
+       by ID ;                                                                                                                          
+       last_year = lag(year) ;                                                                                                          
+       this_year = year ;                                                                                                               
+       this_var = variable ;                                                                                                            
+       if ID = lag(ID) then do year = last_year +1 to year - 1 ;                                                                        
+          variable = . ;                                                                                                                
+             output ;                                                                                                                   
+       end ;                                                                                                                            
+       year = this_year ; variable = this_var ; output ;                                                                                
+    run ;                                                                                                                               
+                                                                                                                                        
+    data want ;                                                                                                                         
+       set GapsFilled ;                                                                                                                 
+       by ID ;                                                                                                                          
+       rolling_mean = mean(lag2(variable),lag(variable),variable) ;                                                                     
+    run ;                                                                                                                               
+                                                                                                                                        
+    /*                                                                                                                                  
+      ___      __ _ _ __ _ __ __ _ _   _                                                                                                
+     / _ \    / _` | `__| `__/ _` | | | |                                                                                               
+    |  __/_  | (_| | |  | | | (_| | |_| |                                                                                               
+     \___(_)  \__,_|_|  |_|  \__,_|\__, |                                                                                               
+                                   |___/                                                                                                
+    */                                                                                                                                  
+                                                                                                                                        
+    %let window = 3;                                                                                                                    
+    data want;                                                                                                                          
+      set sd1.have;                                                                                                                     
+      by id ;                                                                                                                           
+                                                                                                                                        
+      array forAverage[&window.] _temporary_;                                                                                           
+      if first.id or (year-lag(year)>1) then call missing(of forAverage[*]);                                                            
+                                                                                                                                        
+      forAverage[mod(year, &window.)+1] = variable;                                                                                     
+                                                                                                                                        
+      if Nmiss(of forAverage[*]) then rolling_mean = .;                                                                                 
+                                 else rolling_mean=mean(of forAverage[*]);                                                              
+    run;                                                                                                                                
                                                                                                                                         
                                                                                                                                         
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                        
